@@ -3,10 +3,9 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from .models import Project
 from .forms import ProjectForm
 
-# ✅ Project List (Only for Authenticated Users)
-@login_required
+
 def project_list(request):
-    projects = Project.objects.filter(stakeholders=request.user)
+    projects = Project.objects.all()
     return render(request, 'projects/project_list.html', {'projects': projects})
 
 # ✅ Project Detail View

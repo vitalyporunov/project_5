@@ -17,6 +17,7 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path, include
+from . import views
 from django.shortcuts import render
 from django.contrib.auth import views as auth_views  # ✅ Built-in auth views
 
@@ -29,10 +30,10 @@ urlpatterns = [
     path('users/', include('users.urls')),
     path('projects/', include('projects.urls')),
     path('messaging/', include('messaging.urls')),
-    path('accounts/', include('django.contrib.auth.urls')),  # ✅ Default auth URLs
+    path('accounts/', include('django.contrib.auth.urls')),  
 
     # ✅ Home Page
-    path('', home_view, name='home'),
+    path('', views.home_view, name='home'),
 
     # ✅ Password Reset URLs
     path('accounts/password_reset/', auth_views.PasswordResetView.as_view(), name='password_reset'),

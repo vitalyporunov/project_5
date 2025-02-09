@@ -29,10 +29,8 @@ def send_message(request):
     return render(request, 'messaging/send_message.html', {'form': form})
 
 @login_required
-def archive_message(request, pk):
-    message = get_object_or_404(Message, pk=pk, recipient=request.user)
-    message.is_archived = True
-    message.save()
-    return redirect('inbox')
+def archived_messages(request):
+    archived = Message.objects.filter(recipient=request.user, is_archived=True)
+    return render(request, 'messaging/archived_messages.html', {'archived_messages': archived})
 
 # Create your views here.

@@ -25,3 +25,22 @@ class Project(models.Model):
 
     def __str__(self):
         return self.name
+
+class Message(models.Model):
+    sender = models.ForeignKey(
+        User, 
+        related_name='projects_sent_messages',  # ✅ Unique related_name
+        on_delete=models.CASCADE
+    )
+    recipient = models.ForeignKey(
+        User, 
+        related_name='projects_received_messages',  # ✅ Unique related_name
+        on_delete=models.CASCADE
+    )
+    subject = models.CharField(max_length=255)
+    body = models.TextField()
+    timestamp = models.DateTimeField(auto_now_add=True)
+    is_archived = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.subject
