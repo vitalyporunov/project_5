@@ -4,30 +4,32 @@
 <div class="container mt-5">
     <h2 class="text-center mb-4">📦 Archived Messages</h2>
 
-    {% if archived_messages %}
-        <div class="list-group shadow-sm">
-            {% for message in archived_messages %}
-                <a href="{% url 'message_detail' message.id %}" class="list-group-item list-group-item-action">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <strong>From:</strong> {{ message.sender.username }} <br>
-                            <strong>Subject:</strong> {{ message.subject|truncatechars:50 }}
+    <!-- Archived Messages Section -->
+    <div class="card shadow-sm p-4 rounded-4">
+        {% if archived_messages %}
+            <div class="list-group list-group-flush">
+                {% for message in archived_messages %}
+                    <a href="{% url 'message_detail' message.id %}" class="list-group-item list-group-item-action py-3 rounded-3 mb-2 message-card">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h5 class="mb-1 fw-bold">Subject: {{ message.subject|truncatechars:50 }}</h5>
+                                <p class="mb-1 text-muted">From: {{ message.sender.username }}</p>
+                            </div>
+                            <small class="text-secondary">{{ message.timestamp|date:"M d, Y H:i" }}</small>
                         </div>
-                        <div>
-                            <small class="text-muted">{{ message.timestamp|date:"M d, Y H:i" }}</small>
-                        </div>
-                    </div>
-                </a>
-            {% endfor %}
-        </div>
-    {% else %}
-        <div class="alert alert-info text-center" role="alert">
-            No archived messages found. 📭
-        </div>
-    {% endif %}
+                    </a>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="alert alert-info text-center" role="alert">
+                No archived messages found. 📭
+            </div>
+        {% endif %}
+    </div>
 
+    <!-- Back to Inbox Button -->
     <div class="text-center mt-4">
-        <a href="{% url 'inbox' %}" class="btn btn-primary">📥 Back to Inbox</a>
+        <a href="{% url 'inbox' %}" class="btn btn-primary btn-lg rounded-pill shadow-sm">📥 Back to Inbox</a>
     </div>
 </div>
 {% endblock %}

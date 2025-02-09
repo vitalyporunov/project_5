@@ -1,41 +1,53 @@
+{% load static %}
+
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
     <div class="container-fluid">
+        <!-- Brand Logo -->
         <a class="navbar-brand" href="{% url 'home' %}">🌐 MyApp</a>
 
-        <!-- ✅ Mobile Menu Toggle Button -->
+        <!-- Hamburger Icon for Mobile -->
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
-        <!-- ✅ Navbar Links -->
+        <!-- Navbar Content -->
         <div class="collapse navbar-collapse" id="navbarContent">
+            <!-- Left Side Links -->
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'projects' %}">📁 Projects</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'inbox' %}">📨 Messaging</a>
+                    <a class="nav-link" href="{% url 'inbox' %}">📨 Inbox</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'archived_messages' %}">📦 Archived</a>
                 </li>
             </ul>
 
-            <!-- ✅ Right Side (Authentication Links) -->
+            <!-- Right Side (Authentication Links) -->
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                 {% if user.is_authenticated %}
+                    <!-- User Dropdown -->
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             👋 {{ user.username }}
                         </a>
-                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                             <li><a class="dropdown-item" href="{% url 'profile' %}">👤 Profile</a></li>
                             <li><a class="dropdown-item" href="{% url 'profile_update' %}">✏️ Edit Profile</a></li>
                             <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item text-danger" href="{% url 'logout' %}">🚪 Logout</a></li>
+                            <li>
+                                <!-- Logout Button (POST Request) -->
+                                <form action="{% url 'logout' %}" method="POST" style="display: inline;">
+                                    {% csrf_token %}
+                                    <button type="submit" class="dropdown-item text-danger">🚪 Logout</button>
+                                </form>
+                            </li>
                         </ul>
                     </li>
                 {% else %}
+                    <!-- Login & Register Links for Unauthenticated Users -->
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'login' %}">🔐 Login</a>
                     </li>
@@ -47,4 +59,3 @@
         </div>
     </div>
 </nav>
-
