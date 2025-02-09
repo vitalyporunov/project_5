@@ -9,7 +9,10 @@
         <button type="submit" class="btn btn-primary w-100">Login</button>
     </form>
     <p class="text-center mt-3">
-        Don't have an account? <a href="/users/register/">Register here</a>
+        Don't have an account? <a href="{% url 'register' %}">Register here</a>  <!-- ✅ Fixed URL -->
+    </p>
+    <p class="text-center mt-2">
+        <a href="{% url 'password_reset' %}">Forgot your password?</a>  <!-- ✅ Added password reset link -->
     </p>
 </div>
 {% endblock %}
