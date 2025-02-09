@@ -25,5 +25,13 @@ def project_create(request):
         form = ProjectForm()
     return render(request, 'projects/project_form.html', {'form': form})
 
+from django.contrib.auth.decorators import user_passes_test
+
+def is_manager(user):
+    return user.role == 'manager'
+
+@user_passes_test(is_manager)
+def restricted_view(request):
+    return render(request, 'restricted.html')
 
 # Create your views here.

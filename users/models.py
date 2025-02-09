@@ -1,16 +1,25 @@
-from django.contrib.auth.models import AbstractUser, Group, Permission
+from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.shortcuts import render  # ✅ Added import for render
 
+# ✅ Single CustomUser class definition
 class CustomUser(AbstractUser):
-    groups = models.ManyToManyField(
-        Group,
-        related_name='customuser_set',  # Prevents conflict with auth.User
-        blank=True
+    ROLE_CHOICES = (
+        ('admin', 'Admin'),
+        ('manager', 'Manager'),
+        ('employee', 'Employee'),
     )
-    user_permissions = models.ManyToManyField(
-        Permission,
-        related_name='customuser_permissions_set',  # Prevents conflict with auth.User
-        blank=True
-    )
+    role = models.CharField(max_length=20, choices=ROLE_CHOICES, default='employee')
+    
+    def __str__(self):
+        return self.username
 
-# Create your models here.
+# ✅ User role check
+from django.contrib.auth.decorators import user_passes_test
+
+def is_manager(user):
+    return user.role == 'manager'
+
+@user_passes_test(is_manager)
+def restricted_view(request):
+    return render(request, 'restricted.html')
