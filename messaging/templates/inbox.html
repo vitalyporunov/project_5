@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Inbox</h2>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Subject</th>
+            <th>Sender</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for message in messages %}
+        <tr>
+            <td><a href="{{ message.id }}/">{{ message.subject }}</a></td>
+            <td>{{ message.sender }}</td>
+            <td>{% if not message.is_read %}<span class="badge bg-warning">Unread</span>{% else %}Read{% endif %}</td>
+            <td><a href="{{ message.id }}/archive/" class="btn btn-sm btn-outline-secondary">Archive</a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<a href="send/" class="btn btn-primary">Compose New Message</a>
+{% endblock %}
