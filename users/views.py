@@ -23,15 +23,17 @@ def login_view(request):
             user = form.get_user()
             login(request, user)
             return redirect("home")
+        else:
+            return render(request, "users/login.html", {"form": form, "errors": form.errors})  # ✅ Added error handling
     else:
-        form = LoginForm(request=request)  # ✅ Added request for context
+        form = LoginForm()  # ✅ Simplified form initialization
     return render(request, "users/login.html", {"form": form})
 
 # Logout View
-@login_required  # ✅ Optional security measure
+@login_required
 def logout_view(request):
     logout(request)
-    return redirect("login")  # Ensure 'login' URL exists
+    return redirect("login")  # ✅ Ensure 'login' URL exists in urls.py
 
 # Profile Update View
 @login_required
@@ -40,12 +42,12 @@ def profile_update(request):
         form = ProfileUpdateForm(request.POST, instance=request.user)
         if form.is_valid():
             form.save()
-            return redirect('profile')  # ✅ Ensure this URL exists
+            return redirect('profile')  # ✅ Ensure 'profile' URL exists
     else:
         form = ProfileUpdateForm(instance=request.user)
     return render(request, 'users/profile_update.html', {'form': form})
 
-# ✅ Optional Profile View
+# Profile View
 @login_required
 def profile_view(request):
     return render(request, 'users/profile.html', {'user': request.user})

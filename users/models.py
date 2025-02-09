@@ -1,8 +1,7 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
-from django.shortcuts import render  # ✅ Added import for render
+from django.shortcuts import render  
 
-# ✅ Single CustomUser class definition
 class CustomUser(AbstractUser):
     ROLE_CHOICES = (
         ('admin', 'Admin'),
