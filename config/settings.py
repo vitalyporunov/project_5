@@ -32,14 +32,11 @@ import environ
 env = environ.Env()
 environ.Env.read_env()
 
-DEBUG = False
+import os
+DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = [
-    'project-5-2bz7.onrender.com/'
-    'localhost',
-    '127.0.0.1'
-]
-    
+
+ALLOWED_HOSTS = ['project-5-2bz7.onrender.com', 'localhost', '127.0.0.1']
 
 
 # Application definition
@@ -151,4 +148,6 @@ EMAIL_HOST_PASSWORD = 'Smcjketd03!'
 
 LOGIN_REDIRECT_URL = '/projects/' 
 LOGOUT_REDIRECT_URL = '/'
+
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
