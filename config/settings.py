@@ -138,4 +138,6 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'vitaly.porunov@gmail.com'      
 EMAIL_HOST_PASSWORD = 'Smcjketd03!'    
 
-LOGIN_REDIRECT_URL = '/users/profile/'  
+LOGIN_REDIRECT_URL = '/projects/' 
+LOGOUT_REDIRECT_URL = '/'
+

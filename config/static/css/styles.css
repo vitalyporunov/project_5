@@ -25,3 +25,42 @@ h2 {
 .card:hover {
     transform: translateY(-5px);
 }
+
+.fullscreen-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Full viewport height */
+    text-align: center;
+}
+
+.fullscreen-center h1 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #343a40; /* Dark gray */
+}
+
+.fullscreen-center p {
+    font-size: 1.25rem;
+    color: #6c757d; /* Muted gray */
+}
+footer {
+    background-color: #212529; /* Dark gray */
+    color: #f8f9fa;            /* Light text */
+    padding: 20px 0;
+}
+
+footer h5 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+footer p {
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+footer hr {
+    border-color: rgba(255, 255, 255, 0.2);
+    margin: 15px 0;
+}

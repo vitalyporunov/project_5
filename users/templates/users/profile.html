@@ -5,7 +5,6 @@
     <h2 class="text-center">👤 Your Profile</h2>
     <div class="card shadow-sm p-4 mx-auto mt-4" style="max-width: 500px; border-radius: 15px;">
         <div class="text-center mb-4">
-            <img src="https://via.placeholder.com/100" class="rounded-circle" alt="Profile Picture">
         </div>
 
         <ul class="list-group list-group-flush">
@@ -22,9 +21,4 @@
             <a href="{% url 'password_change' %}" class="btn btn-warning w-100 ms-2">Change Password 🔑</a>
         </div>
     </div>
-
-    <div class="text-center mt-4">
-        <a href="{% url 'logout' %}" class="btn btn-danger">Logout 🚪</a>
-    </div>
-</div>
 {% endblock %}
