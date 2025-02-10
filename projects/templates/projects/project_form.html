@@ -1,12 +1,52 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 
 {% block content %}
 <div class="container mt-5">
-    <h2>Create New Project 🚀</h2>
-    <form method="POST" class="shadow p-4 rounded-4 bg-light">
-        {% csrf_token %}
-        {{ form.as_p }}  <!-- ✅ Renders the form fields -->
-        <button type="submit" class="btn btn-primary">Create Project</button>
-    </form>
+    <h2 class="text-center">➕ Create New Project</h2>
+    <div class="card shadow-sm p-4 mt-4">
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+
+            <!-- Project Name -->
+            <div class="mb-3">
+                <label for="id_name" class="form-label">Project Name</label>
+                {{ form.name }}
+            </div>
+
+            <!-- Description -->
+            <div class="mb-3">
+                <label for="id_description" class="form-label">Description</label>
+                {{ form.description }}
+            </div>
+
+            <!-- Start Date with Calendar -->
+            <div class="mb-3">
+                <label for="id_start_date" class="form-label">Start Date</label>
+                {{ form.start_date }}  <!-- ✅ Calendar Integrated -->
+            </div>
+
+            <!-- End Date with Calendar -->
+            <div class="mb-3">
+                <label for="id_end_date" class="form-label">End Date</label>
+                {{ form.end_date }}  <!-- ✅ Calendar Integrated -->
+            </div>
+
+            <!-- Stakeholders -->
+            <div class="mb-3">
+                <label for="id_stakeholders" class="form-label">Stakeholders</label>
+                {{ form.stakeholders }}
+            </div>
+
+            <!-- Status -->
+            <div class="mb-3">
+                <label for="id_status" class="form-label">Status</label>
+                {{ form.status }}
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn btn-success w-100">🚀 Create Project</button>
+        </form>
+    </div>
 </div>
 {% endblock %}

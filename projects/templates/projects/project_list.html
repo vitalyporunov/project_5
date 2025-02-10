@@ -1,15 +1,31 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h2>Project List</h2>
-<ul>
-    {% for project in projects %}
-        <li>
-            <strong>{{ project.name }}</strong> - {{ project.description }}
-            <a href="{% url 'project_detail' project.id %}">View Details</a>
-        </li>
-    {% empty %}
-        <li>No projects available.</li>
-    {% endfor %}
-</ul>
+<div class="container mt-5">
+    <h2 class="text-center">📋 Project List</h2>
+
+    {% if user.is_authenticated %}  <!-- ✅ Show content only for logged-in users -->
+
+        {% if projects %}
+            <ul class="list-group mt-4">
+                {% for project in projects %}
+                    <li class="list-group-item">
+                        <h5>{{ project.name }}</h5>
+                        <p>{{ project.description }}</p>
+                        <small><strong>Status:</strong> {{ project.status }}</small>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <div class="alert alert-info text-center mt-4">
+                🚫 No projects available.
+            </div>
+        {% endif %}
+
+    {% else %}
+        <div class="alert alert-warning text-center mt-4">
+            🚪 Please <a href="{% url 'login' %}">log in</a> to view your projects.
+        </div>
+    {% endif %}
+</div>
 {% endblock %}
