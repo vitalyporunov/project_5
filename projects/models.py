@@ -3,16 +3,16 @@ from django.contrib.auth import get_user_model
 
 User = get_user_model()
 
-# Category Model
+# ✅ Category Model
 class Category(models.Model):
     name = models.CharField(max_length=100)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='categories')  # Added related_name for clarity
 
     def __str__(self):
         return self.name
 
 
-# Project Model
+# ✅ Project Model
 class Project(models.Model):
     STATUS_CHOICES = [
         ('Not Started', 'Not Started'),
@@ -24,33 +24,47 @@ class Project(models.Model):
     description = models.TextField()
     start_date = models.DateField()
     end_date = models.DateField()
+
+    # ✅ Owner - Unique related_name to prevent conflicts
     owner = models.ForeignKey(
         User, 
         on_delete=models.CASCADE, 
-        related_name='owned_projects'  # ✅ Unique related_name for owner
+        related_name='owned_projects'
     )
+
+    # ✅ Stakeholders - Fixed ManyToManyField for user association
     stakeholders = models.ManyToManyField(
-        User, 
-        related_name='stakeholder_projects',  # ✅ Unique related_name for stakeholders
+        User,
+        related_name='stakeholder_projects',
         blank=True
     )
+
+    # ✅ Status Field with default value
     status = models.CharField(max_length=50, choices=STATUS_CHOICES, default='Not Started')
-    category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True)
+
+    # ✅ Category - Ensure clarity with related_name
+    category = models.ForeignKey(
+        Category, 
+        on_delete=models.SET_NULL, 
+        null=True, 
+        blank=True,
+        related_name='projects'  # Added related_name for reverse querying
+    )
 
     def __str__(self):
         return self.name
 
 
-# Message Model
+# ✅ Message Model
 class Message(models.Model):
     sender = models.ForeignKey(
         User,
-        related_name='projects_sent_messages',  # ✅ Unique related_name for sender
+        related_name='sent_messages',  # Simplified related_name
         on_delete=models.CASCADE
     )
     recipient = models.ForeignKey(
         User,
-        related_name='projects_received_messages',  # ✅ Unique related_name for recipient
+        related_name='received_messages',  # Simplified related_name
         on_delete=models.CASCADE
     )
     subject = models.CharField(max_length=255)
@@ -59,4 +73,4 @@ class Message(models.Model):
     is_archived = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.subject
+        return f'{self.subject} (From: {self.sender.username})'
