@@ -21,18 +21,14 @@ def project_create(request):
     if request.method == 'POST':
         form = ProjectForm(request.POST)
         if form.is_valid():
-            project = form.save(commit=False)
-            project.owner = request.user  # Link the project to the logged-in user
-            project.save()
-
-            if hasattr(project, 'stakeholders'):  
-                project.stakeholders.add(request.user)  # Add user as stakeholder if applicable
-
-            return redirect('project_list')  # Redirect after successful creation
+            project = form.save(commit=False)  # Save project without committing to DB yet
+            project.owner = request.user      # Assign the logged-in user as the owner
+            project.save()                    # Save the project with the owner
+            return redirect('projects')       # Redirect to project list after creation
     else:
         form = ProjectForm()
-
-    return render(request, 'projects/project_form.html', {'form': form})
+    
+    return render(request, 'projects/create_project.html', {'form': form})
 
 # ✅ Role-Based Access (For Managers Only)
 def is_manager(user):
@@ -40,4 +36,5 @@ def is_manager(user):
 
 @user_passes_test(is_manager)
 def restricted_view(request):
-    return render(request, 'restricted.html')
+    return render(request, 'projects/restricted.html')
+
