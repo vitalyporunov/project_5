@@ -15,16 +15,16 @@ def project_detail(request, pk):
     project = get_object_or_404(Project, pk=pk, owner=request.user)  # Ensure users see only their projects
     return render(request, 'projects/project_detail.html', {'project': project})
 
-# ✅ Project Creation View
 @login_required
 def project_create(request):
     if request.method == 'POST':
         form = ProjectForm(request.POST)
         if form.is_valid():
-            project = form.save(commit=False)  # Save project without committing to DB yet
-            project.owner = request.user      # Assign the logged-in user as the owner
-            project.save()                    # Save the project with the owner
-            return redirect('projects')       # Redirect to project list after creation
+            project = form.save(commit=False)  # Don't save to DB yet
+            project.owner = request.user      # ✅ Assign the logged-in user as the owner
+            project.save()                    # Now save to the DB
+            form.save_m2m()                   # Save many-to-many relationships (if any)
+            return redirect('projects')       # Redirect after creation
     else:
         form = ProjectForm()
     
