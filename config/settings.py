@@ -144,7 +144,7 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'porunovsasha@gmail.com'      
-EMAIL_HOST_PASSWORD = '06Sasha1973'
+EMAIL_HOST_PASSWORD = 'hvcpjlhcygbzqbco'
 DEFAULT_FROM_EMAIL = 'porunovsasha@gmail.com>'    
 
 LOGIN_REDIRECT_URL = '/projects/' 
