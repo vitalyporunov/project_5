@@ -6,7 +6,11 @@ User = get_user_model()
 # ✅ Category Model
 class Category(models.Model):
     name = models.CharField(max_length=100)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='categories')  # Added related_name for clarity
+    user = models.ForeignKey(
+        User, 
+        on_delete=models.CASCADE, 
+        related_name='categories'  # Unique related_name for clarity
+    )
 
     def __str__(self):
         return self.name
@@ -32,7 +36,7 @@ class Project(models.Model):
         related_name='owned_projects'
     )
 
-    # ✅ Stakeholders - Fixed ManyToManyField for user association
+    # ✅ Stakeholders - ManyToManyField for user association
     stakeholders = models.ManyToManyField(
         User,
         related_name='stakeholder_projects',
@@ -42,7 +46,7 @@ class Project(models.Model):
     # ✅ Status Field with default value
     status = models.CharField(max_length=50, choices=STATUS_CHOICES, default='Not Started')
 
-    # ✅ Category - Ensure clarity with related_name
+    # ✅ Category - Ensuring clarity with related_name
     category = models.ForeignKey(
         Category, 
         on_delete=models.SET_NULL, 
@@ -55,22 +59,50 @@ class Project(models.Model):
         return self.name
 
 
-# ✅ Message Model
+# ✅ Messaging Model for General Communication
 class Message(models.Model):
     sender = models.ForeignKey(
         User,
-        related_name='sent_messages',  # Simplified related_name
+        related_name='messaging_sent_messages',  # ✅ Unique related_name for messaging
         on_delete=models.CASCADE
     )
     recipient = models.ForeignKey(
         User,
-        related_name='received_messages',  # Simplified related_name
+        related_name='messaging_received_messages',  # ✅ Unique related_name for messaging
         on_delete=models.CASCADE
     )
     subject = models.CharField(max_length=255)
     body = models.TextField()
     timestamp = models.DateTimeField(auto_now_add=True)
     is_archived = models.BooleanField(default=False)
+    is_read = models.BooleanField(default=False)
 
     def __str__(self):
         return f'{self.subject} (From: {self.sender.username})'
+
+
+# ✅ Messaging Model for Project-Specific Communication
+class ProjectMessage(models.Model):
+    sender = models.ForeignKey(
+        User,
+        related_name='projects_sent_messages',  # ✅ Unique related_name for project messaging
+        on_delete=models.CASCADE
+    )
+    recipient = models.ForeignKey(
+        User,
+        related_name='projects_received_messages',  # ✅ Unique related_name for project messaging
+        on_delete=models.CASCADE
+    )
+    project = models.ForeignKey(
+        Project, 
+        on_delete=models.CASCADE,
+        related_name='messages'  # ✅ Connect messages to specific projects
+    )
+    subject = models.CharField(max_length=255)
+    body = models.TextField()
+    timestamp = models.DateTimeField(auto_now_add=True)
+    is_archived = models.BooleanField(default=False)
+    is_read = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f'{self.subject} (Project: {self.project.name})'
