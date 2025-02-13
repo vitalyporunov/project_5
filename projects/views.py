@@ -1,40 +1,53 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required, user_passes_test
 from .models import Project
 from .forms import ProjectForm
 
-# ✅ Project List (Shows only user's projects)
+# ✅ Project List
 @login_required
 def project_list(request):
-    projects = Project.objects.filter(owner=request.user)  # Show projects belonging to the logged-in user
+    projects = Project.objects.filter(owner=request.user)
     return render(request, 'projects/project_list.html', {'projects': projects})
 
-# ✅ Project Detail View
+# ✅ Project Detail
 @login_required
 def project_detail(request, pk):
-    project = get_object_or_404(Project, pk=pk, owner=request.user)  # Ensure users see only their projects
+    project = get_object_or_404(Project, pk=pk, owner=request.user)
     return render(request, 'projects/project_detail.html', {'project': project})
 
+# ✅ Create Project
 @login_required
 def project_create(request):
     if request.method == 'POST':
         form = ProjectForm(request.POST)
         if form.is_valid():
-            project = form.save(commit=False)  # Don't save to DB yet
-            project.owner = request.user      # ✅ Assign the logged-in user as the owner
-            project.save()                    # Now save to the DB
-            form.save_m2m()                   # Save many-to-many relationships (if any)
-            return redirect('projects')       # Redirect after creation
+            project = form.save(commit=False)
+            project.owner = request.user  # ✅ Assign owner
+            project.save()
+            form.save_m2m()
+            return redirect('projects')
     else:
         form = ProjectForm()
-    
     return render(request, 'projects/create_project.html', {'form': form})
 
-# ✅ Role-Based Access (For Managers Only)
-def is_manager(user):
-    return hasattr(user, 'role') and user.role == 'manager'  # Safe role checking
+# ✅ Update Project
+@login_required
+def project_update(request, pk):
+    project = get_object_or_404(Project, pk=pk, owner=request.user)
+    if request.method == 'POST':
+        form = ProjectForm(request.POST, instance=project)
+        if form.is_valid():
+            form.save()
+            return redirect('project_detail', pk=project.pk)
+    else:
+        form = ProjectForm(instance=project)
+    return render(request, 'projects/update_project.html', {'form': form})
 
-@user_passes_test(is_manager)
-def restricted_view(request):
-    return render(request, 'projects/restricted.html')
-
+# ✅ Delete Project
+@login_required
+def project_delete(request, pk):
+    project = get_object_or_404(Project, pk=pk, owner=request.user)
+    if request.method == 'POST':
+        project.delete()
+        return redirect('projects')
+    return render(request, 'projects/delete_project.html', {'project': project})

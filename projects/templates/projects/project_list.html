@@ -2,17 +2,28 @@
 
 {% block content %}
 <div class="container mt-5">
-    <h2 class="text-center">📋 Project List</h2>
+    <h2 class="text-center">📋 My Projects</h2>
 
-    {% if user.is_authenticated %}  
+    {% if user.is_authenticated %}
+        <div class="text-center mt-3">
+            <a href="{% url 'create_project' %}" class="btn btn-primary">+ Create New Project</a>
+        </div>
 
         {% if projects %}
             <ul class="list-group mt-4">
                 {% for project in projects %}
-                    <li class="list-group-item">
-                        <h5>{{ project.name }}</h5>
-                        <p>{{ project.description }}</p>
-                        <small><strong>Status:</strong> {{ project.status }}</small>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <div>
+                            <h5 class="mb-1">
+                                <a href="{% url 'project_detail' project.pk %}" class="text-decoration-none">{{ project.name }}</a>
+                            </h5>
+                            <p class="mb-1">{{ project.description }}</p>
+                            <small><strong>Status:</strong> {{ project.status }}</small>
+                        </div>
+                        <div>
+                            <a href="{% url 'update_project' project.pk %}" class="btn btn-sm btn-warning">✏️ Edit</a>
+                            <a href="{% url 'delete_project' project.pk %}" class="btn btn-sm btn-danger">🗑️ Delete</a>
+                        </div>
                     </li>
                 {% endfor %}
             </ul>
@@ -29,3 +40,4 @@
     {% endif %}
 </div>
 {% endblock %}
+
