@@ -141,12 +141,14 @@ AUTH_USER_MODEL = 'users.CustomUser'
 
 import os
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "smtp.gmail.com"
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'apikey'      
-DEFAULT_FROM_EMAIL = 'porunovsasha@gmail.com' 
+EMAIL_USE_SSL = False
+EMAIL_HOST_USER = "porunovsasha@gmail.com" 
+EMAIL_HOST_PASSWORD = "yxfsxysabaappmfdg"  
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 LOGIN_REDIRECT_URL = '/projects/' 
 LOGOUT_REDIRECT_URL = '/'
