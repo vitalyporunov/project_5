@@ -17,7 +17,7 @@
             <td><a href="{{ message.id }}/">{{ message.subject }}</a></td>
             <td>{{ message.sender }}</td>
             <td>{% if not message.is_read %}<span class="badge bg-warning">Unread</span>{% else %}Read{% endif %}</td>
-            <td><a href="{{ message.id }}/archive/" class="btn btn-sm btn-outline-secondary">Archive</a></td>
+            <td><a href="{% url 'archive_message' message.pk %}" class="btn btn-sm btn-warning">📦 Archive</a></td>
         </tr>
         {% endfor %}
     </tbody>

@@ -11,7 +11,7 @@ def inbox(request):
 @login_required
 def message_detail(request, pk):
     message = get_object_or_404(Message, pk=pk, recipient=request.user)
-    message.is_read = True
+    message.is_read = True  # ✅ Mark as read
     message.save()
     return render(request, 'messaging/message_detail.html', {'message': message})
 
@@ -22,6 +22,13 @@ def send_message(request):
         if form.is_valid():
             message = form.save(commit=False)
             message.sender = request.user
+            
+            # ✅ Ensure recipient is set
+            if 'recipient' in form.cleaned_data:
+                message.recipient = form.cleaned_data['recipient']
+            else:
+                return redirect('send_message')  # Handle missing recipient
+
             message.save()
             return redirect('inbox')
     else:
@@ -29,8 +36,8 @@ def send_message(request):
     return render(request, 'messaging/send_message.html', {'form': form})
 
 @login_required
-def archived_messages(request):
-    archived = Message.objects.filter(recipient=request.user, is_archived=True)
-    return render(request, 'messaging/archived_messages.html', {'archived_messages': archived})
-
-# Create your views here.
+def archive_message(request, pk):
+    message = get_object_or_404(Message, pk=pk, recipient=request.user)  # ✅ Restrict access
+    message.is_archived = True
+    message.save()
+    return redirect('inbox')
