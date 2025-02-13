@@ -147,7 +147,7 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
 EMAIL_HOST_USER = "porunovsasha@gmail.com" 
-EMAIL_HOST_PASSWORD = "yxfsxysabaappmfdg"  
+EMAIL_HOST_PASSWORD = "iprgvznbwkrtuhkj"  
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 LOGIN_REDIRECT_URL = '/projects/' 
